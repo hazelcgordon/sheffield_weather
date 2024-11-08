@@ -1,0 +1,29 @@
+---
+title: "Sheffield Weather Trends"
+author: "Hazel C Gordon"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+
+```
+
+## Project Description
+
+Todays class we will be looking at Sheffields weather trends. 
+
+Data is available from this link:
+
+https://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/sheffielddata.txt 
+
+## Import Data
+
+## Wrangle Data
+
+## Visualise the Data
