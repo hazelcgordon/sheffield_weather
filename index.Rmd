@@ -22,8 +22,74 @@ Data is available from this link:
 
 https://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/sheffielddata.txt 
 
+The URL for these pages is:
+
+https://hazelcgordon.github.io/sheffield_weather/
+
+The repository for these pages is:
+
+https://github.com/hazelcgordon/sheffield_weather.git
+
 ## Import Data
+
+```{r import}
+
+loc = "https://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/sheffielddata.txt"
+
+# split values by 'tabs' with \t (white space)
+# this approach doesn't work
+
+#df <- read.csv(loc, sep = "\t", skip = 7)
+
+# import as text, instead of csv, and clean 
+
+dat <- readLines(loc)
+
+# change the word 'provisional' to nothing, replace every instance 
+
+dat <- gsub("Provisional", "", dat)
+dat <- gsub("\\*", "", dat)
+dat <- gsub("\\#", "", dat)
+
+# save new file
+
+writeLines(dat, "cleaned.txt")
+
+# import data file
+
+df <- read.table("cleaned.txt", skip = 7, fill = TRUE)
+
+```
 
 ## Wrangle Data
 
+```{r wrangle}
+
+cols <- c("year", "month", "max_t", "min_t", "af", "rain", "sun")
+
+colnames(df) <- cols
+
+```
+
+
 ## Visualise the Data
+
+```{r plot}
+
+# I need max temperature to be a number, use as.numeric
+
+df$max_t <- as.numeric(df$max_t)
+
+# create plot, change transparency with alpha
+
+# canvas
+
+p <- ggplot(df, aes(x = month, y = max_t, group = year, colour = year))
+
+# ink
+
+p + geom_line(alpha = 0.1) +
+  geom_line(data = df %>% filter(year == 2024), colour = "red", linewidth = 2)
+
+```
+
