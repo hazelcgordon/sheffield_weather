@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(gganimate)
+library(zoo) #for the rolling mean function
 
 ```
 
@@ -106,16 +107,21 @@ df2 <- df %>%
   group_by(year) %>%
   summarise(avg_t = mean(max_t))
 
-# create an animated plot
+# create an animated plot, canvas
 
 p2 <- ggplot(df2, aes(x = year, y = avg_t), frame = year)
 
-# cumulative keeps it on the screen
+# define the window size
+
+windowsize <- 17
+
+# creates animation, 'cumulative' function keeps points on the screen
 
 anim <- p2 + 
   geom_point() +
+  geom_line(aes(y = zoo::rollmean(avg_t, windowsize, na.pad = TRUE)), colour = "red", size = 2) +
   transition_manual(year, cumulative = TRUE) +
-  ggtitle("The year is: {frame+1882}")
+  ggtitle("The year is: {frame+1882}") 
 
 anim
 
@@ -123,7 +129,13 @@ anim
 
 ```
 
+What is the change in the average temperature over time?
 
+```{r rolling mean plot}
+
+
+
+```
 
 
 
